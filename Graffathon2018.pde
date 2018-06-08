@@ -2,41 +2,61 @@
 // A parametric surface is textured procedurally
 // by drawing on an offscreen PGraphics surface.
 
-PGraphics pg;
+//import moonlander.library.*;
+
+PImage img;
 PShape trefoil;
+
+//Moonlander moonlander;
 
 void setup() {
   size(1024, 768, P3D);
-  
-  textureMode(NORMAL);
+
+  textureMode(IMAGE);
   noStroke();
 
-  // Creating offscreen surface for 3D rendering.
-  pg = createGraphics(32, 512, P3D);
-  pg.beginDraw();
-  pg.background(0, 0);
-  pg.noStroke();
-  pg.fill(255, 0, 0, 200);
-  pg.endDraw(); 
-
+  int imgScale = 128;
+  int half = 64;
+  img = createImage(imgScale, imgScale, ARGB);
+  for(int i = 0; i < half; i++) {
+    for(int j = 0; j < half; j++) {
+      if(i % 3 == 0 && j % 3 == 0){
+        float noise = noise(i, j);
+        if(noise < 0.5)
+          img.pixels[i + j * imgScale] = color(255, 235, 0); 
+          //noise = 0;
+        //img.pixels[i + j * imgScale] = color(255, 235, 0, noise); 
+      }else{
+        float a = map(j, 0, half, 20, 10);
+        img.pixels[i + j * imgScale] = color(0, a * 0.66, a); 
+      }
+      img.pixels[i + half + (j + half) * imgScale] = color(5, 5, 5, 255); 
+    }
+  }
+  
+  //moonlander.start();
   // Saving trefoil surface into a PShape3D object
-  trefoil = createCity(350, 60, 15, pg);
+  trefoil = createCity(30, 15, img);
 }
 
 void draw() {
+  //moonlander.update();
   background(0);
   
-  pg.beginDraw();    
-  pg.ellipse(random(pg.width), random(pg.height), 20, 20);
-  pg.endDraw(); 
+    //double bg_red = moonlander.getValue("background_red");
+    //int bg_green = moonlander.getIntValue("background_green");
 
-  ambient(250, 250, 250);
-  pointLight(255, 255, 255, 0, 0, 200);
-     
+  // Set default perspective
+  // Set cam position
+  camera(0, -30, 20, 1500, 750, 0, 0, 0, -1);
+  //perspective();
+  translate(-frameCount*2, 0, 0);
+  //rotateZ(-frameCount * PI / 500);
+  
+  lights();
+  ambientLight(150, 150, 150);
+  
   pushMatrix();
-  translate(width/2, height/2, -200);
-  rotateX(frameCount * PI / 500);
-  rotateY(frameCount * PI / 500);      
   shape(trefoil);
   popMatrix();
 }
