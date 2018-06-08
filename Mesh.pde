@@ -20,44 +20,66 @@ PShape createCity(float s, int ny, int nx, PImage tex) {
     
     for (int i = 0; i < ny; i++) {
       
+      float h = 1;
+      
       PVector p000 = new PVector(i, j, 0);
       PVector p100 = new PVector(i + bsizeX, j, 0);
       PVector p200 = new PVector(i + 1, j, 0);      
       PVector p010 = new PVector(i, j + bsizeY, 0);
       PVector p110 = new PVector(i + bsizeX, j + bsizeY, 0);
       PVector p210 = new PVector(i + 1, j + bsizeY, 0);
+      PVector p020 = new PVector(i, j + 1, 0);
+      PVector p120 = new PVector(i + bsizeX, j + 1, 0);
       PVector p220 = new PVector(i + 1, j + 1, 0);
       
       // Roof
-      PVector p001 = new PVector(i, j, 1);
-      PVector p101 = new PVector(i + bsizeX, j, 1);
-      PVector p011 = new PVector(i, j + bsizeY, 1);
-      PVector p111 = new PVector(i + bsizeX, j + bsizeY, 1);
+      PVector p001 = new PVector(i, j, h);
+      PVector p101 = new PVector(i + bsizeX, j, h);
+      PVector p011 = new PVector(i, j + bsizeY, h);
+      PVector p111 = new PVector(i + bsizeX, j + bsizeY, h);
 
-      // Back wall
-      setNormals(obj, back);
-      setVertex(obj, p000, 0, 0);
-      setVertex(obj, p001, 0, 0.5);
-      setVertex(obj, p100, 0, 0.5);
-
-      setNormals(obj, back);
-      setVertex(obj, p100, 0, 0);
-      setVertex(obj, p001, 0, 0.5);
-      setVertex(obj, p101, 0, 0.5);
+      // Walls: front, left, back, right
+        makeQuad(obj, p000, p001, p101, p100, back, true);
+        makeQuad(obj, p010, p011, p001, p000, back, true);
+        makeQuad(obj, p110, p111, p011, p010, back, true);
+        makeQuad(obj, p100, p101, p111, p110, back, true);
   
+      // Roof
+        makeQuad(obj, p001, p011, p111, p101, back, true);
+        
+      // Street
+        makeQuad(obj, p100, p120, p220, p200, back, true);
+        makeQuad(obj, p010, p020, p210, p110, back, true);
     }
   }
   obj.endShape();
   return obj;
 }
 
-void setNormals(PShape obj, PVector vec){
-  obj.normal(vec.x, vec.y, vec.z);
-  obj.normal(vec.x, vec.y, vec.z);
-  obj.normal(vec.x, vec.y, vec.z);
+void makeQuad(PShape obj, PVector vec0, PVector vec1, PVector vec2, PVector vec3,
+        PVector normal, boolean windows){
+      float texBase = windows ? 0 : 0.5;
+      
+      setNormal(obj, normal);
+      setVertex(obj, vec0, texBase, texBase);
+      setNormal(obj, normal);
+      setVertex(obj, vec1, texBase, texBase + 0.5);
+      setNormal(obj, normal);
+      setVertex(obj, vec2, texBase + 0.5, texBase + 0.5);
+      
+      setNormal(obj, normal);
+      setVertex(obj, vec2, texBase + 0.5, texBase + 0.5);
+      setNormal(obj, normal);
+      setVertex(obj, vec3, texBase + 0.5, texBase);
+      setNormal(obj, normal);
+      setVertex(obj, vec0, 0, 0.5);
 }
+
 void setVertex(PShape obj, PVector vec, float xtex, float ytex){
   obj.vertex(vec.x, vec.y, vec.z, xtex, ytex);
+}
+void setNormal(PShape obj, PVector vec){
+  obj.normal(vec.x, vec.y, vec.z);
 }
 // Evaluates the surface normal corresponding to normalized 
 // parameters (u, v)

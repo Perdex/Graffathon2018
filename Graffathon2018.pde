@@ -27,7 +27,7 @@ void draw() {
   background(0);
   
   pg.beginDraw();    
-  pg.ellipse(random(pg.width), random(pg.height), 4, 4);
+  pg.ellipse(random(pg.width), random(pg.height), 20, 20);
   pg.endDraw(); 
 
   ambient(250, 250, 250);
