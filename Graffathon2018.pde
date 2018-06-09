@@ -6,7 +6,8 @@ import moonlander.library.*;
 import ddf.minim.*;
 
 ArrayList<PShape> buildings;
-//PShader windowShader;
+ParticleSystem ps;
+//PShader lightShader;
 
 float speed = 0.5;
 
@@ -15,6 +16,15 @@ Moonlander moonlander;
 void setup() {
   size(1024, 768, P3D);
   frameRate(60);
+  
+  PImage part = createImage(5, 5, RGB);
+  part.loadPixels();
+  for(int i = 0; i < part.pixels.length; i++){
+    part.pixels[i] = color(128);
+  }
+  part.updatePixels();
+
+  ps = new ParticleSystem(100, new PVector(0,0,0), part);
 
   textureMode(IMAGE);
   ((PGraphicsOpenGL)g).textureSampling(2);
@@ -57,6 +67,10 @@ void draw() {
   
   float windowBrightness = (float)moonlander.getValue("windowBrightness");
   
+  ps.setOrigin(new PVector(lightx, lighty, lightz));
+  ps.addParticle();
+  ps.run();
+  
   //180, 40, 30
   if(frameCount % 5 == 1)
     updateTextures(buildings, FFT == 1, roadCol, windowBrightness);
@@ -69,7 +83,7 @@ void draw() {
   
   //translate(-frameCount, 0, 0);
   //rotateZ(-frameCount * PI / 500);
-  
+
   lights();
   ambientLight(150, 150, 150);
   specular(150);
