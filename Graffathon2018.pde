@@ -77,7 +77,9 @@ void draw() {
   background(lerp(0, 79, bg), lerp(0, 108, bg), lerp(0, 155, bg));
   
   ps.setOrigin(new PVector(lightx, lighty, lightz));
-  ps.addParticle();
+  for(int i = 0; i < moonlander.getIntValue("particles"); i++){
+    ps.addParticle();
+  }
   ps.run();
   
   //180, 40, 30
