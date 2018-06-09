@@ -5,8 +5,8 @@
 import moonlander.library.*;
 import ddf.minim.*;
 
-PImage img;
-PShape trefoil;
+PShape buildings;
+//PShader windowShader;
 
 Moonlander moonlander;
 
@@ -15,39 +15,24 @@ void setup() {
   frameRate(60);
 
   textureMode(IMAGE);
-  //noStroke();
-
-  int imgScale = 128;
-  int half = 64;
-  img = createImage(imgScale, imgScale, ARGB);
-  for(int i = 0; i < half; i++) {
-    for(int j = 0; j < half; j++) {
-      
-      // walls
-      float r = map(j, 0, half, 60, 0);
-      float g = map(j, 0, half, 50, 20);
-      float b = map(j, 0, half, 30, 30);
-      img.pixels[i + j * imgScale] = color(r, g, b); 
-      
-      // windows
-      if(i % 3 == 1 && j % 3 == 1){
-        float noise = noise(i, j);
-        if(noise < 0.5)
-          noise = 0;
-        img.pixels[i + j * imgScale] = color(lerp(r, 255, noise), lerp(g, 235, noise), lerp(b, 0, noise)); 
-      }
-      
-      // roads and rooftops
-      img.pixels[i + half + (j + half) * imgScale] = color(5, 5, 5, 255); 
-    }
-  }
   ((PGraphicsOpenGL)g).textureSampling(2);
-  // Saving trefoil surface into a PShape3D object
-  trefoil = createCity(30, 15, img);
+  
+  noiseSeed(1235612415);
+  
+  strokeWeight(1);
+  stroke(0);
+  //windowShader = loadShader("texfrag.glsl", "texvert.glsl");
+
+  buildings = createCity(0, 0, 10, 10);
+  //addTexture(buildings);
+  
   //moonlander = Moonlander.initWithSoundtrack(this, "rebirth.mp3", 96, 4);
   //moonlander = new Moonlander(this, new TimeController(4));
   //moonlander.start();
+  addTexture(buildings, 0, 0, 1);
 }
+
+float treshold = 0.78;
 
 void draw() {
   //moonlander.update();
@@ -55,17 +40,38 @@ void draw() {
   
   //double bg_red = moonlander.getValue("background_red");
   //int bg_green = moonlander.getIntValue("background_green");
+  
+  int camx = frameCount;
+  int camy = -40;
+  
+  
+  if(frameCount % 5 == 1){
+    buildings = createCity(camx, camy, 10, 10);
+    if(treshold > 0.5)
+      treshold -= 0.001;
+  }
+    //buildings = createCity(camx/meshScale, camy/meshScale, 10, 10);
+    //buildings = createCity(0, 0, 10, 10);
+  
+ 
 
   // Set perspective and cam position
-  camera(0, -40, 20, 1500, 750, 0, 0, 0, -1);
+  // cam position, scene center position, up vector
+  camera(camx, camy, 20, 180, 20, 30, 0, 0, -1);
+  // Fov, aspect ratio, near, far
   perspective(PI/3, width/height, 1, 2000);
-  translate(-frameCount, 0, 0);
+  
+  //translate(-frameCount, 0, 0);
   //rotateZ(-frameCount * PI / 500);
   
   lights();
   ambientLight(150, 150, 150);
+  specular(150);
+  drawLight(80, -20, 10);
   
+  stroke((int)(noise(frameCount * 0.01) * min(frameCount*4, 255)));
   pushMatrix();
-  shape(trefoil);
+  //shader(windowShader);
+  shape(buildings);
   popMatrix();
 }
