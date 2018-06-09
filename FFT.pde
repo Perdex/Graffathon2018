@@ -1,7 +1,9 @@
-JSONArray fftData;
+JSONObject fftData;
+JSONArray times;
 
-void fftInit(JSONArray js) {
-  fftData = js; 
+void fftInit() {
+  fftData = loadJSONArray("fft");
+  times = loadJSONArray("times");
 }
 
 float[] fftGet(int t) {

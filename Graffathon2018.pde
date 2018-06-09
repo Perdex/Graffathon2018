@@ -17,7 +17,9 @@ void setup() {
   size(1024, 768, P3D);
   frameRate(60);
   
-  PImage part = createImage(5, 5, RGB);
+  fftInit();
+  
+  PImage part = createImage(5, 5, RGB); 
   part.loadPixels();
   for(int i = 0; i < part.pixels.length; i++){
     part.pixels[i] = color(128);
