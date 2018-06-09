@@ -15,13 +15,13 @@ Moonlander moonlander;
 
 void setup() {
   size(1024, 768, P3D);
-  frameRate(60);
+  frameRate(58);
   
   PImage part = createImage(5, 5, RGB);
   part.loadPixels();
-  for(int i = 0; i < part.pixels.length; i++){
+  for(int i = 0; i < part.pixels.length; i++)
     part.pixels[i] = color(128);
-  }
+
   part.updatePixels();
 
   ps = new ParticleSystem(100, new PVector(0,0,0), part);
@@ -49,7 +49,6 @@ float treshold;
 
 void draw() {
   moonlander.update();
-  background(0);
   
   treshold = (float)moonlander.getValue("treshold");
   
@@ -60,26 +59,34 @@ void draw() {
   camy = (float)moonlander.getValue("camY");
   camz = (float)moonlander.getValue("camZ");
   
+  
   float lightx = (float)moonlander.getValue("lightX");
   float lighty = (float)moonlander.getValue("lightY");
   float lightz = (float)moonlander.getValue("lightZ");
   float lightSize = (float)moonlander.getValue("lightSize");
   
+  boolean makeSun = moonlander.getIntValue("makeSun") == 1;
+  
   float windowBrightness = (float)moonlander.getValue("windowBrightness");
+  
+  float bg = (float)moonlander.getValue("background");
+  float buildingColor = bg;
+  
+  background(lerp(0, 79, bg), lerp(0, 108, bg), lerp(0, 155, bg));
   
   ps.setOrigin(new PVector(lightx, lighty, lightz));
   ps.addParticle();
   ps.run();
   
   //180, 40, 30
-  if(frameCount % 5 == 1)
-    updateTextures(buildings, FFT == 1, roadCol, windowBrightness);
+  if(frameCount % 6 == 1)
+    updateTextures(buildings, FFT == 1, roadCol, windowBrightness, buildingColor);
 
   // Set perspective and cam position
   // cam position, scene center position, up vector
   camera(camx, camy, camz, lightx, lighty, lightz, 0, 0, -1);
   // Fov, aspect ratio, near, far
-  perspective(PI/3, width/height, 1, 2000);
+  perspective(PI/3, width/height, 1, 8000);
   
   //translate(-frameCount, 0, 0);
   //rotateZ(-frameCount * PI / 500);
@@ -88,6 +95,8 @@ void draw() {
   ambientLight(150, 150, 150);
   specular(150);
   drawLight(lightx, lighty, lightz, lightSize);
+  if(makeSun)
+    drawLight(-2000, 2000, 1000, 40);
   
   pushMatrix();
   //shader(windowShader);

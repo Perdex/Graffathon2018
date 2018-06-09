@@ -7,10 +7,11 @@ int yellowR = 235;
 int yellowG = 215;
 int yellowB = 40;
 
-void updateTextures(ArrayList<PShape> arr, boolean isFFT, int roadColor, float windowBrightness) {
+void updateTextures(ArrayList<PShape> arr, boolean isFFT, int roadColor,
+                    float windowBrightness, float buildingColor) {
   
   PImage tex = isFFT ? makeTextureFFT((int)(96 * noise(camx * 0.1 + 412)))
-                     : makeTexture(windowBrightness);
+                     : makeTexture(windowBrightness, buildingColor);
   for(int i = 0; i < arr.size() - 1; i++)
     arr.get(i).setTexture(tex);
   arr.get(arr.size() - 1).setTexture(makeTextureRoad(roadColor));
@@ -22,7 +23,7 @@ ArrayList<PShape> createCity(int ny, int nx, boolean isFFT) {
   //PShape objs[] = new PShape[(2*ny + 1) * (2*nx + 1) + 1];
   
   PImage tex = isFFT ? makeTextureFFT((int)(128 * noise(camx * 0.1 + 412)))
-                     : makeTexture(0);
+                     : makeTexture(0, 0);
   
   PVector back = new PVector(0, -1, 0);
   PVector front = new PVector(0, 1, 0);
@@ -35,8 +36,8 @@ ArrayList<PShape> createCity(int ny, int nx, boolean isFFT) {
   float bsizeX = 0.5;
   float bsizeY = 0.5;
   
-  for (int j = -nx; j <= +nx; j++) {
-    for (int i = -ny; i <= +ny; i++) {
+  for (int j = -nx; j < nx; j++) {
+    for (int i = -ny; i < ny; i++) {
       PShape obj = createShape();
       obj.beginShape(QUADS);
       obj.texture(tex);
@@ -104,8 +105,8 @@ void makeQuad(PShape obj, PVector vec0, PVector vec1, PVector vec2, PVector vec3
       }else{
         texLeft = 0;
         texRight = 1;
-        texBottom = 0;
-        texTop = 1;
+        texBottom = 127;
+        texTop = 128;
       }
       
       setNormal(obj, normal);
@@ -129,7 +130,7 @@ void setNormal(PShape obj, PVector vec){
 }
 
 
-PImage makeTexture(float windowBrightness){
+PImage makeTexture(float windowBrightness, float buildingColor){
   
   int imgScale = 128;
   PImage img = createImage(imgScale, imgScale, ARGB);
@@ -137,9 +138,9 @@ PImage makeTexture(float windowBrightness){
     for(int j = 0; j < imgScale; j++) {
       
       // walls
-      int r = 0;//map(j, 0, half, 60, 0);
-      int g = 0;//map(j, 0, half, 50, 20);
-      int b = 0;//map(j, 0, half, 30, 30);
+      int r = (int)(map(j, 0, imgScale, 60, 0) * buildingColor);
+      int g = (int)(map(j, 0, imgScale, 50, 20) * buildingColor);
+      int b = (int)(map(j, 0, imgScale, 30, 30) * buildingColor);
       int a = 255;
       img.pixels[i + j * imgScale] = color(r, g, b, a); 
       
