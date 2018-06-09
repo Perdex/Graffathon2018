@@ -5,8 +5,10 @@
 import moonlander.library.*;
 import ddf.minim.*;
 
-PShape buildings;
+ArrayList<PShape> buildings;
 //PShader windowShader;
+
+float speed = 0.5;
 
 Moonlander moonlander;
 
@@ -17,22 +19,23 @@ void setup() {
   textureMode(IMAGE);
   ((PGraphicsOpenGL)g).textureSampling(2);
   
-  noiseSeed(1235612415);
+  noiseSeed(123561245);
   
-  strokeWeight(1);
+  strokeWeight(2);
   stroke(0);
   //windowShader = loadShader("texfrag.glsl", "texvert.glsl");
+  smooth(8);
 
-  buildings = createCity(0, 0, 10, 10);
+  buildings = createCity(10, 10, false);
   //addTexture(buildings);
   
   //moonlander = Moonlander.initWithSoundtrack(this, "rebirth.mp3", 96, 4);
   //moonlander = new Moonlander(this, new TimeController(4));
   //moonlander.start();
-  addTexture(buildings, 0, 0, 1);
 }
 
-float treshold = 0.78;
+float treshold = 0.9;
+int camx = 0, camy = 0;
 
 void draw() {
   //moonlander.update();
@@ -41,14 +44,13 @@ void draw() {
   //double bg_red = moonlander.getValue("background_red");
   //int bg_green = moonlander.getIntValue("background_green");
   
-  int camx = frameCount;
-  int camy = -40;
-  
+  camx = (int)(frameCount * speed);
+  camy = -40;
   
   if(frameCount % 5 == 1){
-    buildings = createCity(camx, camy, 10, 10);
+    updateTextures(buildings, frameCount > 1000);
     if(treshold > 0.5)
-      treshold -= 0.001;
+      treshold -= 0.003;
   }
     //buildings = createCity(camx/meshScale, camy/meshScale, 10, 10);
     //buildings = createCity(0, 0, 10, 10);
@@ -57,7 +59,7 @@ void draw() {
 
   // Set perspective and cam position
   // cam position, scene center position, up vector
-  camera(camx, camy, 20, 180, 20, 30, 0, 0, -1);
+  camera(camx, camy, 5, 180, 40, 30, 0, 0, -1);
   // Fov, aspect ratio, near, far
   perspective(PI/3, width/height, 1, 2000);
   
@@ -67,11 +69,12 @@ void draw() {
   lights();
   ambientLight(150, 150, 150);
   specular(150);
-  drawLight(80, -20, 10);
+  drawLight(180, 80, 10);
   
-  stroke((int)(noise(frameCount * 0.01) * min(frameCount*4, 255)));
+  stroke(max(0, min(frameCount/2 - 100, 200)));
   pushMatrix();
   //shader(windowShader);
-  shape(buildings);
+  for(PShape b: buildings)
+    shape(b);
   popMatrix();
 }

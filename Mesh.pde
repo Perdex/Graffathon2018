@@ -3,10 +3,22 @@ int meshScale = 100;
 int textScale = 64;
 int maxh = 4;
 
-PShape createCity(int camx, int camy, int ny, int nx) {
+void updateTextures(ArrayList<PShape> arr, boolean isFFT) {
   
-  PShape obj = createShape();
-  obj.beginShape(QUADS);
+  PImage tex = isFFT ? makeTextureFFT((int)(128 * noise(camx * 0.1 + 412)))
+                     : makeTexture(treshold);
+  for(int i = 0; i < arr.size() - 1; i++)
+    arr.get(i).setTexture(tex);
+  arr.get(arr.size() - 1).setTexture(makeTextureRoad());
+  
+}
+ArrayList<PShape> createCity(int ny, int nx, boolean isFFT) {
+  
+  ArrayList<PShape> objs = new ArrayList();
+  //PShape objs[] = new PShape[(2*ny + 1) * (2*nx + 1) + 1];
+  
+  PImage tex = isFFT ? makeTextureFFT((int)(128 * noise(camx * 0.1 + 412)))
+                     : makeTexture(treshold);
   
   PVector back = new PVector(0, -1, 0);
   PVector front = new PVector(0, 1, 0);
@@ -21,12 +33,13 @@ PShape createCity(int camx, int camy, int ny, int nx) {
   
   for (int j = -nx; j <= +nx; j++) {
     for (int i = -ny; i <= +ny; i++) {
+      PShape obj = createShape();
+      obj.beginShape(QUADS);
+      obj.texture(tex);
       
       int buildingResolution = 128;
-      float h = (int)(buildingResolution * noise(i + camx * 0.03, j + camy * 0.02));
+      float h = (int)(buildingResolution * noise(i + camx * 0.0, j + camy * 0.0));
       h /= buildingResolution;
-      if(h < 0.1 || h > 0.7)
-        h = 0;
       h *= maxh;
       
       PVector p000 = new PVector(i, j, 0);
@@ -46,70 +59,77 @@ PShape createCity(int camx, int camy, int ny, int nx) {
       PVector p111 = new PVector(i + bsizeX, j + bsizeY, h);
 
       // Walls: front, left, back, right
-        makeQuad(obj, p000, p001, p101, p100, back, h, true);
-        makeQuad(obj, p010, p011, p001, p000, left, h, true);
-        makeQuad(obj, p110, p111, p011, p010, front, h, true);
-        makeQuad(obj, p100, p101, p111, p110, right, h, true);
+        makeQuad(obj, p000, p001, p101, p100, back, h, true, true);
+        makeQuad(obj, p010, p011, p001, p000, left, h, true, false);
+        makeQuad(obj, p110, p111, p011, p010, front, h, true, true);
+        makeQuad(obj, p100, p101, p111, p110, right, h, true, false);
         
       // Roof
-        makeQuad(obj, p001, p011, p111, p101, up, h, false);
+        //makeQuad(obj, p001, p011, p111, p101, up, h, false);
         
       // Street
         //makeQuad(obj, p100, p120, p220, p200, up, h, false);
         //makeQuad(obj, p010, p020, p120, p110, up, h, false);
+          
+      obj.endShape();
+      objs.add(obj);
     }
   }
   
-  makeQuad(obj, new PVector(-nx * meshScale, -ny * meshScale, 0),
+  PShape roads = createShape();
+  roads.beginShape(QUADS);
+  makeQuad(roads, new PVector(-nx * meshScale, -ny * meshScale, 0),
                 new PVector(-nx * meshScale, ny * meshScale, 0),
                 new PVector(nx * meshScale, ny * meshScale, 0),
                 new PVector(nx * meshScale, -ny * meshScale, 0),
-                up, 1, false);
-  obj.endShape();
-  addTexture(obj, camx, camy, treshold);
-  return obj;
+                up, 1, false, false);
+  roads.setTexture(makeTextureRoad());
+  roads.endShape();
+  objs.add(roads);
+  return objs;
 }
 
 void makeQuad(PShape obj, PVector vec0, PVector vec1, PVector vec2, PVector vec3,
-        PVector normal, float h, boolean windows){
+        PVector normal, float h, boolean windows, boolean transpose){
       int texLeft, texRight, texBottom, texTop;
-      if(windows){
-        texLeft = 0;
-        texRight = 31;
+      //if(windows){
+        texLeft = (int)(96 * noise(vec0.x, vec0.y));
+        texRight = texLeft + 31;
         texBottom = 0;
         texTop = (int)(textScale * h / maxh);
-      }else{
+      /*}else{
         texLeft = 65;
         texRight = 66;
         texBottom = 0;
         texTop = 1;
-      }
+      }*/
       
       setNormal(obj, normal);
-      setVertex(obj, vec0, texLeft, texBottom);
+      setVertex(obj, vec0, texLeft, texBottom, transpose);
       setNormal(obj, normal);
-      setVertex(obj, vec1, texLeft, texTop);
+      setVertex(obj, vec1, texLeft, texTop, transpose);
       setNormal(obj, normal);
-      setVertex(obj, vec2, texRight, texTop);
+      setVertex(obj, vec2, texRight, texTop, transpose);
       setNormal(obj, normal);
-      setVertex(obj, vec3, texRight, texBottom);
+      setVertex(obj, vec3, texRight, texBottom, transpose);
 }
 
-void setVertex(PShape obj, PVector vec, float xtex, float ytex){
-  obj.vertex(meshScale * vec.x, meshScale * vec.y, meshScale * vec.z, xtex, ytex);
+void setVertex(PShape obj, PVector vec, float xtex, float ytex, boolean transpose){
+  if(transpose)
+    obj.vertex(meshScale * vec.x, meshScale * vec.y, meshScale * vec.z, ytex, xtex);
+  else
+    obj.vertex(meshScale * vec.x, meshScale * vec.y, meshScale * vec.z, xtex, ytex);
 }
 void setNormal(PShape obj, PVector vec){
   obj.normal(vec.x, vec.y, vec.z);
 }
 
 
-PImage img;
-void addTexture(PShape obj, int x, int y, float treshold){
+PImage makeTexture(float treshold){
   
   int imgScale = 128;
-  int half = 64;
-  img = createImage(imgScale, imgScale, ARGB);
-  for(int i = 0; i < half; i++) {
+  PImage img = createImage(imgScale, imgScale, ARGB);
+  for(int i = 0; i < imgScale; i++) {
     for(int j = 0; j < imgScale; j++) {
       
       // walls
@@ -120,22 +140,53 @@ void addTexture(PShape obj, int x, int y, float treshold){
       img.pixels[i + j * imgScale] = color(r, g, b, a); 
       
       // windows
-      if(i % 2 == 1 && j % 2 == 1){
-        float noise = noise(i + x * 0.02, j + y * 0.02);
+      if(i % 3 == 1 && j % 2 == 1){
+        float noise = noise(i, j) + noise(camx * 0.01, camy * 0.01) * 0.02;
         if(noise < treshold)
           noise = 0;
         img.pixels[i + j * imgScale] = color(lerp(r, 255, noise),
                                             lerp(g, 235, noise), 
-                                            lerp(b, 0, noise)); 
+                                            lerp(b, 30, noise)); 
       }
     }
   }
-
+/*
   // roads and rooftops
   for(int i = half; i < imgScale; i++) {
     for(int j = 0; j < imgScale; j++) {
       img.pixels[i + j * imgScale] = color(5, 5, 5, 255); 
     }
   }
-  obj.setTexture(img);
+  */
+  return img;
+}
+
+PImage makeTextureFFT(int h){
+  
+  int imgScale = 128;
+  PImage img = createImage(imgScale, imgScale, ARGB);
+  for(int i = 0; i < imgScale; i++) {
+    for(int j = 0; j < imgScale; j++) {
+      // windows
+      if(j < h)
+        img.pixels[i + j * imgScale] = color(255, 235, 30); 
+      else
+        img.pixels[i + j * imgScale] = color(0, 0, 0); 
+    }
+  }
+/*
+  // roads and rooftops
+  for(int i = half; i < imgScale; i++) {
+    for(int j = 0; j < imgScale; j++) {
+      img.pixels[i + j * imgScale] = color(5, 5, 5, 255); 
+    }
+  }
+  */
+  return img;
+}
+PImage makeTextureRoad(){
+  
+  PImage img = createImage(1, 1, ARGB);
+  img.pixels[0] = color(max(0, min(frameCount/20 - 100, 20)));
+  return img;
 }
