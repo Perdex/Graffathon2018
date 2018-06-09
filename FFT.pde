@@ -1,4 +1,4 @@
-JSONObject fftData;
+JSONArray fftData;
 JSONArray times;
 
 void fftInit() {
@@ -6,11 +6,18 @@ void fftInit() {
   times = loadJSONArray("times");
 }
 
-float[] fftGet(int t) {
-  JSONArray arr = fftData.getJSONArray(t);
-  float[] res = new float[16];
-  for(int i = 0; i < 16; i++) {
-    res[i] = arr.getFloat(i); 
+float[] fftGet(float t) {
+  int idx;
+  for(int i = 0; i < 3366; i++) {
+     if(times.getFloat(i) > t) {
+       idx = i;
+       break;
+     }
+  }
+  JSONArray arr = fftData.getJSONArray(idx);
+  float[] res = new float[20];
+  for(int i = 0; i < 20; i++) {
+     res[i] = arr.getFloat(i);
   }
   return res;
 }
