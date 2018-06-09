@@ -52,9 +52,13 @@ void draw() {
   float lightx = (float)moonlander.getValue("lightX");
   float lighty = (float)moonlander.getValue("lightY");
   float lightz = (float)moonlander.getValue("lightZ");
+  float lightSize = (float)moonlander.getValue("lightSize");
+  
+  float windowBrightness = (float)moonlander.getValue("windowBrightness");
+  
   //180, 40, 30
   if(frameCount % 5 == 1)
-    updateTextures(buildings, FFT == 1, roadCol);
+    updateTextures(buildings, FFT == 1, roadCol, windowBrightness);
 
   // Set perspective and cam position
   // cam position, scene center position, up vector
@@ -68,7 +72,7 @@ void draw() {
   lights();
   ambientLight(150, 150, 150);
   specular(150);
-  drawLight(lightx, lighty, lightz);
+  drawLight(lightx, lighty, lightz, lightSize);
   
   pushMatrix();
   //shader(windowShader);

@@ -7,10 +7,10 @@ int yellowR = 235;
 int yellowG = 215;
 int yellowB = 40;
 
-void updateTextures(ArrayList<PShape> arr, boolean isFFT, int roadColor) {
+void updateTextures(ArrayList<PShape> arr, boolean isFFT, int roadColor, float windowBrightness) {
   
   PImage tex = isFFT ? makeTextureFFT((int)(96 * noise(camx * 0.1 + 412)))
-                     : makeTexture();
+                     : makeTexture(windowBrightness);
   for(int i = 0; i < arr.size() - 1; i++)
     arr.get(i).setTexture(tex);
   arr.get(arr.size() - 1).setTexture(makeTextureRoad(roadColor));
@@ -22,7 +22,7 @@ ArrayList<PShape> createCity(int ny, int nx, boolean isFFT) {
   //PShape objs[] = new PShape[(2*ny + 1) * (2*nx + 1) + 1];
   
   PImage tex = isFFT ? makeTextureFFT((int)(128 * noise(camx * 0.1 + 412)))
-                     : makeTexture();
+                     : makeTexture(0);
   
   PVector back = new PVector(0, -1, 0);
   PVector front = new PVector(0, 1, 0);
@@ -129,7 +129,7 @@ void setNormal(PShape obj, PVector vec){
 }
 
 
-PImage makeTexture(){
+PImage makeTexture(float windowBrightness){
   
   int imgScale = 128;
   PImage img = createImage(imgScale, imgScale, ARGB);
@@ -144,7 +144,8 @@ PImage makeTexture(){
       img.pixels[i + j * imgScale] = color(r, g, b, a); 
       
       if(i % 2 == 1 && j % 2 == 1){
-        float noise = noise(i * 2, j * 2) + noise(camx * 0.01, camy * 0.01) * 0.02;
+        float noise = noise(i * 2 + camx * 0.0002, j * 2 + camy * 0.0002) + windowBrightness;
+        noise = max(0, min(noise, 1));
         if(noise < treshold)
           noise = 0;
         img.pixels[i + j * imgScale] = color(lerp(r, yellowR, noise),

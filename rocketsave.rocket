@@ -1,30 +1,49 @@
 <sync rows="1024">
 	<tracks>
 		<track name="treshold">
-			<key value="0.8" interpolation="3" row="0"/>
-			<key value="0.6" interpolation="0" row="32"/>
+			<key interpolation="3" row="0" value="0.9"/>
+			<key interpolation="0" row="32" value="0.6"/>
 		</track>
 		<track name="roadCol">
-			<key value="0" interpolation="3" row="0"/>
-			<key value="40" interpolation="0" row="32"/>
+			<key interpolation="3" row="0" value="0"/>
+			<key interpolation="0" row="32" value="40"/>
 		</track>
 		<track name="doFFT">
-			<key value="0" interpolation="0" row="0"/>
+			<key interpolation="0" row="0" value="0"/>
 		</track>
 		<track name="camX">
-			<key value="0" interpolation="2" row="0"/>
-			<key value="175" interpolation="1" row="88"/>
-			<key value="175" interpolation="0" row="136"/>
-			<key value="2000" interpolation="0" row="552"/>
+			<key interpolation="2" row="0" value="0"/>
+			<key interpolation="1" row="88" value="175"/>
+			<key interpolation="0" row="136" value="175"/>
+			<key interpolation="0" row="552" value="2000"/>
 		</track>
 		<track name="camY">
-			<key value="-25" interpolation="1" row="0"/>
-			<key value="-25" interpolation="2" row="88"/>
-			<key value="175" interpolation="0" row="136"/>
+			<key interpolation="1" row="0" value="-25"/>
+			<key interpolation="2" row="88" value="-25"/>
+			<key interpolation="0" row="128" value="155"/>
 		</track>
-		<track name="lightX"/>
-		<track name="lightY"/>
-		<track name="lightZ"/>
+		<track name="lightX">
+			<key interpolation="2" row="0" value="180"/>
+			<key interpolation="2" row="80" value="180"/>
+			<key interpolation="2" row="104" value="190"/>
+			<key interpolation="2" row="120" value="220"/>
+		</track>
+		<track name="lightY">
+			<key interpolation="2" row="0" value="-25"/>
+			<key interpolation="2" row="80" value="40"/>
+			<key interpolation="2" row="104" value="140"/>
+			<key interpolation="0" row="120" value="160"/>
+		</track>
+		<track name="lightZ">
+			<key interpolation="2" row="0" value="30"/>
+			<key interpolation="2" row="80" value="30"/>
+			<key interpolation="2" row="104" value="10"/>
+			<key interpolation="0" row="120" value="5"/>
+		</track>
+		<track name="lightSize"/>
+		<track name="windowBrightness">
+			<key interpolation="0" row="0" value="0"/>
+		</track>
 	</tracks>
 	<bookmarks/>
 </sync>

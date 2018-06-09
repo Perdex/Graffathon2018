@@ -1,7 +1,7 @@
 
 
 
-void drawLight(float x, float y, float z){
+void drawLight(float x, float y, float z, float size){
   
   pushMatrix();
   shininess(10);
@@ -12,7 +12,7 @@ void drawLight(float x, float y, float z){
   
   noStroke();
   translate(x, y, z);
-  sphere(0.1);
+  sphere(size);
   //filter( BLUR, 0 );
   popMatrix();
 }
