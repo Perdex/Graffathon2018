@@ -7,23 +7,31 @@ int yellowR = 235;
 int yellowG = 215;
 int yellowB = 40;
 
-void updateTextures(ArrayList<PShape> arr, boolean isFFT, int roadColor,
+void updateTextures(ArrayList<PShape> arr, int FFT, double t, int roadColor,
                     float windowBrightness, float buildingColor) {
-  
-  PImage tex = isFFT ? makeTextureFFT((int)(96 * noise(camx * 0.1 + 412)))
-                     : makeTexture(windowBrightness, buildingColor);
-  for(int i = 0; i < arr.size() - 1; i++)
-    arr.get(i).setTexture(tex);
+  if(FFT > 0){
+    float[] fft = fftGet((float)t);
+    PImage tex[] = new PImage[20];
+    for(int i = 0; i < 20; i++)
+      tex[i] = FFT == 1 ? makeTextureFFT((int)(fft[i] * 128))
+                     : makeTexture(windowBrightness * fft[i], buildingColor);
+                     
+    for(int i = 0; i < arr.size() - 1; i++)
+      arr.get(i).setTexture(tex[i / 20]);
+                     
+  }else{
+    PImage tex = makeTexture(windowBrightness, buildingColor);
+    for(int i = 0; i < arr.size() - 1; i++)
+      arr.get(i).setTexture(tex);
+  }
   arr.get(arr.size() - 1).setTexture(makeTextureRoad(roadColor));
-  
 }
-ArrayList<PShape> createCity(int ny, int nx, boolean isFFT) {
+ArrayList<PShape> createCity(int ny, int nx) {
   
   ArrayList<PShape> objs = new ArrayList();
   //PShape objs[] = new PShape[(2*ny + 1) * (2*nx + 1) + 1];
   
-  PImage tex = isFFT ? makeTextureFFT((int)(128 * noise(camx * 0.1 + 412)))
-                     : makeTexture(0, 0);
+  PImage tex = makeTexture(0, 0);
   
   PVector back = new PVector(0, -1, 0);
   PVector front = new PVector(0, 1, 0);

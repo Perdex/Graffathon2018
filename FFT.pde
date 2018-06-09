@@ -7,7 +7,7 @@ void fftInit() {
 }
 
 float[] fftGet(float t) {
-  int idx;
+  int idx = -1;
   for(int i = 0; i < 3366; i++) {
      if(times.getFloat(i) > t) {
        idx = i;

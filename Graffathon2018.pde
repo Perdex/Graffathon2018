@@ -38,7 +38,7 @@ void setup() {
   //windowShader = loadShader("texfrag.glsl", "texvert.glsl");
   smooth(8);
 
-  buildings = createCity(10, 10, false);
+  buildings = createCity(10, 10);
   //addTexture(buildings);
   
   moonlander = Moonlander.initWithSoundtrack(this, "UNITY - Eternal Youth.mp3", 145, 4);
@@ -81,8 +81,8 @@ void draw() {
   ps.run();
   
   //180, 40, 30
-  if(frameCount % 6 == 1)
-    updateTextures(buildings, FFT == 1, roadCol, windowBrightness, buildingColor);
+  if(FFT > 0 || frameCount % 6 == 1)
+    updateTextures(buildings, FFT, moonlander.getCurrentTime(), roadCol, windowBrightness, buildingColor);
 
   // Set perspective and cam position
   // cam position, scene center position, up vector
