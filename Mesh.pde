@@ -14,13 +14,13 @@ void updateTextures(ArrayList<PShape> arr, int FFT, double t, int roadColor,
     PImage tex[] = new PImage[20];
     for(int i = 0; i < 20; i++)
       tex[i] = FFT == 1 ? makeTextureFFT((int)(fft[i] * 128))
-                     : makeTexture(windowBrightness * fft[i], buildingColor);
+                     : makeTexture(windowBrightness, buildingColor, fft[i]);
                      
     for(int i = 0; i < arr.size() - 1; i++)
       arr.get(i).setTexture(tex[i / 20]);
                      
   }else{
-    PImage tex = makeTexture(windowBrightness, buildingColor);
+    PImage tex = makeTexture(windowBrightness, buildingColor, 1);
     for(int i = 0; i < arr.size() - 1; i++)
       arr.get(i).setTexture(tex);
   }
@@ -31,7 +31,7 @@ ArrayList<PShape> createCity(int ny, int nx) {
   ArrayList<PShape> objs = new ArrayList();
   //PShape objs[] = new PShape[(2*ny + 1) * (2*nx + 1) + 1];
   
-  PImage tex = makeTexture(0, 0);
+  PImage tex = makeTexture(0, 0, 1);
   
   PVector back = new PVector(0, -1, 0);
   PVector front = new PVector(0, 1, 0);
@@ -138,7 +138,7 @@ void setNormal(PShape obj, PVector vec){
 }
 
 
-PImage makeTexture(float windowBrightness, float buildingColor){
+PImage makeTexture(float windowBrightness, float buildingColor, float fft){
   
   int imgScale = 128;
   PImage img = createImage(imgScale, imgScale, ARGB);
@@ -158,6 +158,7 @@ PImage makeTexture(float windowBrightness, float buildingColor){
         if(noise < treshold)
           noise = 0;
         noise += windowBrightness;
+        noise *= fft;
         img.pixels[i + j * imgScale] = color(lerp(r, yellowR, noise),
                                             lerp(g, yellowG, noise), 
                                             lerp(b, yellowB, noise)); 

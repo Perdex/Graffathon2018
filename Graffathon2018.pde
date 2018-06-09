@@ -96,7 +96,9 @@ void draw() {
   lights();
   ambientLight(150, 150, 150);
   specular(150);
-  drawLight(lightx, lighty, lightz, lightSize);
+  drawLight(lightx + 2 * noise(frameCount * 0.2 + 332),
+            lighty + 2 * noise(frameCount * 0.2 + 676),
+            lightz + 2 * noise(frameCount * 0.2 - 257), lightSize);
   if(makeSun)
     drawLight(-2000, 2000, 1000, 40);
   

@@ -4,9 +4,8 @@
 void drawLight(float x, float y, float z, float size){
   
   pushMatrix();
-  shininess(10);
-  emissive(255, 255, 150);
-  fill(255, 255, 150);
+  //emissive(255, 255, 128);
+  fill(255, 235, 100);
   
   //filter( BLUR, 6 );
   
