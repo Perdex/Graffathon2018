@@ -1,10 +1,14 @@
-BufferedReader reader = createReader('fft');
+JSONArray fftData;
 
-float[] readLine() {
-  String[] pieces = split(reader.readLine(), ',');
-  float[] res = new float[pieces.length()];
-  for(int i = 0; i < pieces.length(); i++) {
-    res[i] = float(pieces[i]);
+void fftInit(JSONArray js) {
+  fftData = js; 
+}
+
+float[] fftGet(int t) {
+  JSONArray arr = fftData.getJSONArray(t);
+  float[] res = new float[16];
+  for(int i = 0; i < 16; i++) {
+    res[i] = arr.getFloat(i); 
   }
   return res;
 }
