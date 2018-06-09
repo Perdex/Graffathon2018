@@ -14,7 +14,7 @@ float speed = 0.5;
 Moonlander moonlander;
 
 void setup() {
-  size(1024, 768, P3D);
+  size(1920, 1080, P3D);
   frameRate(58);
   
   fftInit();

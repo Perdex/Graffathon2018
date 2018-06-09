@@ -83,7 +83,7 @@ class Particle {
 
   // Method to display
   void render() {
-    fill(150, 0, 0, lifespan);
+    fill(255, 255, 200, lifespan);
     translate(loc.x, loc.y, loc.z);
     sphere(1);
     translate(-loc.x, -loc.y, -loc.z);
