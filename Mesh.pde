@@ -6,7 +6,7 @@ int maxh = 3;
 PShape createCity(int ny, int nx, PImage tex) {
   
   PShape obj = createShape();
-  obj.beginShape(TRIANGLES);
+  obj.beginShape(QUADS);
   obj.texture(tex);
   
   PVector back = new PVector(0, -1, 0);
@@ -62,26 +62,23 @@ PShape createCity(int ny, int nx, PImage tex) {
 
 void makeQuad(PShape obj, PVector vec0, PVector vec1, PVector vec2, PVector vec3,
         PVector normal, float h, boolean windows){
-      float texBase = windows ? 0 : textScale / 2;
-      float textScaleY = windows ? 1 : 0.5 * textScale * h / maxh;
+      float texLeft = windows ? 0 : textScale * 0.5;
+      float texRight = texLeft + textScale * 0.5;
+      float texBottom = windows ? 0 : textScale / 2;
+      float texTop = textScale * (windows ? h / maxh  : 1);
       
       setNormal(obj, normal);
-      setVertex(obj, vec0, texBase, texBase);
+      setVertex(obj, vec0, texLeft, texBottom);
       setNormal(obj, normal);
-      setVertex(obj, vec1, texBase, texBase + textScaleY);
+      setVertex(obj, vec1, texLeft, texTop);
       setNormal(obj, normal);
-      setVertex(obj, vec2, texBase + 0.5, texBase + textScaleY);
-      
+      setVertex(obj, vec2, texRight, texTop);
       setNormal(obj, normal);
-      setVertex(obj, vec2, texBase + 0.5, texBase + textScaleY);
-      setNormal(obj, normal);
-      setVertex(obj, vec3, texBase + 0.5, texBase);
-      setNormal(obj, normal);
-      setVertex(obj, vec0, texBase, texBase);
+      setVertex(obj, vec3, texRight, texBottom);
 }
 
 void setVertex(PShape obj, PVector vec, float xtex, float ytex){
-  obj.vertex(meshScale * vec.x, meshScale * vec.y, meshScale * vec.z, textScale * xtex, textScale * ytex);
+  obj.vertex(meshScale * vec.x, meshScale * vec.y, meshScale * vec.z, xtex, ytex);
 }
 void setNormal(PShape obj, PVector vec){
   obj.normal(vec.x, vec.y, vec.z);
