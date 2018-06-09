@@ -3,13 +3,17 @@ int meshScale = 100;
 int textScale = 64;
 int maxh = 4;
 
-void updateTextures(ArrayList<PShape> arr, boolean isFFT) {
+int yellowR = 235;
+int yellowG = 215;
+int yellowB = 40;
+
+void updateTextures(ArrayList<PShape> arr, boolean isFFT, int roadColor) {
   
-  PImage tex = isFFT ? makeTextureFFT((int)(128 * noise(camx * 0.1 + 412)))
-                     : makeTexture(treshold);
+  PImage tex = isFFT ? makeTextureFFT((int)(96 * noise(camx * 0.1 + 412)))
+                     : makeTexture();
   for(int i = 0; i < arr.size() - 1; i++)
     arr.get(i).setTexture(tex);
-  arr.get(arr.size() - 1).setTexture(makeTextureRoad());
+  arr.get(arr.size() - 1).setTexture(makeTextureRoad(roadColor));
   
 }
 ArrayList<PShape> createCity(int ny, int nx, boolean isFFT) {
@@ -18,7 +22,7 @@ ArrayList<PShape> createCity(int ny, int nx, boolean isFFT) {
   //PShape objs[] = new PShape[(2*ny + 1) * (2*nx + 1) + 1];
   
   PImage tex = isFFT ? makeTextureFFT((int)(128 * noise(camx * 0.1 + 412)))
-                     : makeTexture(treshold);
+                     : makeTexture();
   
   PVector back = new PVector(0, -1, 0);
   PVector front = new PVector(0, 1, 0);
@@ -83,8 +87,8 @@ ArrayList<PShape> createCity(int ny, int nx, boolean isFFT) {
                 new PVector(nx * meshScale, ny * meshScale, 0),
                 new PVector(nx * meshScale, -ny * meshScale, 0),
                 up, 1, false, false);
-  roads.setTexture(makeTextureRoad());
   roads.endShape();
+  roads.setTexture(makeTextureRoad(0));
   objs.add(roads);
   return objs;
 }
@@ -125,7 +129,7 @@ void setNormal(PShape obj, PVector vec){
 }
 
 
-PImage makeTexture(float treshold){
+PImage makeTexture(){
   
   int imgScale = 128;
   PImage img = createImage(imgScale, imgScale, ARGB);
@@ -139,14 +143,13 @@ PImage makeTexture(float treshold){
       int a = 255;
       img.pixels[i + j * imgScale] = color(r, g, b, a); 
       
-      // windows
-      if(i % 3 == 1 && j % 2 == 1){
-        float noise = noise(i, j) + noise(camx * 0.01, camy * 0.01) * 0.02;
+      if(i % 2 == 1 && j % 2 == 1){
+        float noise = noise(i * 2, j * 2) + noise(camx * 0.01, camy * 0.01) * 0.02;
         if(noise < treshold)
           noise = 0;
-        img.pixels[i + j * imgScale] = color(lerp(r, 255, noise),
-                                            lerp(g, 235, noise), 
-                                            lerp(b, 30, noise)); 
+        img.pixels[i + j * imgScale] = color(lerp(r, yellowR, noise),
+                                            lerp(g, yellowG, noise), 
+                                            lerp(b, yellowB, noise)); 
       }
     }
   }
@@ -169,7 +172,7 @@ PImage makeTextureFFT(int h){
     for(int j = 0; j < imgScale; j++) {
       // windows
       if(j < h)
-        img.pixels[i + j * imgScale] = color(255, 235, 30); 
+        img.pixels[i + j * imgScale] = color(yellowR, yellowG, yellowB); 
       else
         img.pixels[i + j * imgScale] = color(0, 0, 0); 
     }
@@ -184,9 +187,9 @@ PImage makeTextureFFT(int h){
   */
   return img;
 }
-PImage makeTextureRoad(){
+PImage makeTextureRoad(int roadColor){
   
   PImage img = createImage(1, 1, ARGB);
-  img.pixels[0] = color(max(0, min(frameCount/20 - 100, 20)));
+  img.pixels[0] = color(roadColor);
   return img;
 }

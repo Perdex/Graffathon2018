@@ -21,41 +21,40 @@ void setup() {
   
   noiseSeed(123561245);
   
-  strokeWeight(2);
-  stroke(0);
+  strokeWeight(1);
+  stroke(100);
   //windowShader = loadShader("texfrag.glsl", "texvert.glsl");
   smooth(8);
 
   buildings = createCity(10, 10, false);
   //addTexture(buildings);
   
-  //moonlander = Moonlander.initWithSoundtrack(this, "rebirth.mp3", 96, 4);
+  moonlander = Moonlander.initWithSoundtrack(this, "Eternal Youth.mp3", 96, 4);
   //moonlander = new Moonlander(this, new TimeController(4));
-  //moonlander.start();
+  moonlander.start();
 }
 
-float treshold = 0.9;
-int camx = 0, camy = 0;
+float camx = 0, camy = 0;
+float treshold;
 
 void draw() {
-  //moonlander.update();
+  moonlander.update();
   background(0);
   
-  //double bg_red = moonlander.getValue("background_red");
-  //int bg_green = moonlander.getIntValue("background_green");
+  treshold = (float)moonlander.getValue("treshold");
   
-  camx = (int)(frameCount * speed);
-  camy = -40;
+  int roadCol = moonlander.getIntValue("roadCol");
+  int FFT = moonlander.getIntValue("doFFT");
   
-  if(frameCount % 5 == 1){
-    updateTextures(buildings, frameCount > 1000);
-    if(treshold > 0.5)
-      treshold -= 0.003;
-  }
-    //buildings = createCity(camx/meshScale, camy/meshScale, 10, 10);
-    //buildings = createCity(0, 0, 10, 10);
+  camx = (float)moonlander.getValue("camX");
+  camy = (float)moonlander.getValue("camY");
   
- 
+  float lightx = (float)moonlander.getValue("lightX");
+  float lighty = (float)moonlander.getValue("lightY");
+  float lightz = (float)moonlander.getValue("lightZ");
+  
+  if(frameCount % 5 == 1)
+    updateTextures(buildings, FFT == 1, roadCol);
 
   // Set perspective and cam position
   // cam position, scene center position, up vector
@@ -69,9 +68,8 @@ void draw() {
   lights();
   ambientLight(150, 150, 150);
   specular(150);
-  drawLight(180, 80, 10);
+  drawLight(lightx, lighty, lightz);
   
-  stroke(max(0, min(frameCount/2 - 100, 200)));
   pushMatrix();
   //shader(windowShader);
   for(PShape b: buildings)

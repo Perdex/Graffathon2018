@@ -11,9 +11,8 @@ void drawLight(float x, float y, float z){
   //filter( BLUR, 6 );
   
   noStroke();
-  fill(255);
   translate(x, y, z);
-  sphere(1);
+  sphere(0.1);
   //filter( BLUR, 0 );
   popMatrix();
 }
