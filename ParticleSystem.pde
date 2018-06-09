@@ -52,12 +52,13 @@ class Particle {
   PImage img;
 
   Particle(PVector l, PImage img_) {
-    acc = new PVector(0, 0);
-    float vx = randomGaussian()*0.3;
-    float vy = randomGaussian()*0.3 - 1.0;
-    vel = new PVector(vx, vy);
+    acc = new PVector(0, 0, 0);
+    float vx = randomGaussian()*0.15;
+    float vz = randomGaussian()*0.15 + 0.1;
+    float vy = randomGaussian()*0.15;
+    vel = new PVector(vx, vy, vz);
     loc = l.copy();
-    lifespan = 100.0;
+    lifespan = 255.0;
     img = img_;
   }
 
@@ -82,9 +83,10 @@ class Particle {
 
   // Method to display
   void render() {
-    imageMode(CENTER);
-    tint(255, lifespan);
-    image(img, loc.x, loc.y);
+    fill(150, 0, 0, lifespan);
+    translate(loc.x, loc.y, loc.z);
+    sphere(1);
+    translate(-loc.x, -loc.y, -loc.z);
     // Drawing a circle instead
     // fill(255,lifespan);
     // noStroke();
