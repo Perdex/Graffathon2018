@@ -29,8 +29,8 @@ void setup() {
   buildings = createCity(10, 10, false);
   //addTexture(buildings);
   
-  moonlander = Moonlander.initWithSoundtrack(this, "Eternal Youth.mp3", 96, 4);
-  //moonlander = new Moonlander(this, new TimeController(4));
+  //moonlander = Moonlander.initWithSoundtrack(this, "rebirth.mp3", 96, 4);
+  moonlander = new Moonlander(this, new TimeController(4));
   moonlander.start();
 }
 
@@ -52,13 +52,13 @@ void draw() {
   float lightx = (float)moonlander.getValue("lightX");
   float lighty = (float)moonlander.getValue("lightY");
   float lightz = (float)moonlander.getValue("lightZ");
-  
+  //180, 40, 30
   if(frameCount % 5 == 1)
     updateTextures(buildings, FFT == 1, roadCol);
 
   // Set perspective and cam position
   // cam position, scene center position, up vector
-  camera(camx, camy, 5, 180, 40, 30, 0, 0, -1);
+  camera(camx, camy, 5, lightx, lighty, lightz, 0, 0, -1);
   // Fov, aspect ratio, near, far
   perspective(PI/3, width/height, 1, 2000);
   

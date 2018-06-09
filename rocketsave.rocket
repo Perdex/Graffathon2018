@@ -1,4 +1,4 @@
-<sync rows="128">
+<sync rows="1024">
 	<tracks>
 		<track name="treshold">
 			<key value="0.8" interpolation="3" row="0"/>
@@ -12,11 +12,15 @@
 			<key value="0" interpolation="0" row="0"/>
 		</track>
 		<track name="camX">
-			<key value="0" interpolation="1" row="0"/>
-			<key value="1000" interpolation="0" row="80"/>
+			<key value="0" interpolation="2" row="0"/>
+			<key value="175" interpolation="1" row="88"/>
+			<key value="175" interpolation="0" row="136"/>
+			<key value="2000" interpolation="0" row="552"/>
 		</track>
 		<track name="camY">
 			<key value="-25" interpolation="1" row="0"/>
+			<key value="-25" interpolation="2" row="88"/>
+			<key value="175" interpolation="0" row="136"/>
 		</track>
 		<track name="lightX"/>
 		<track name="lightY"/>
