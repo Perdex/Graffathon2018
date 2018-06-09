@@ -69,7 +69,7 @@ ArrayList<PShape> createCity(int ny, int nx, boolean isFFT) {
         makeQuad(obj, p100, p101, p111, p110, right, h, true, false);
         
       // Roof
-        //makeQuad(obj, p001, p011, p111, p101, up, h, false);
+        makeQuad(obj, p001, p011, p111, p101, up, h, false, false);
         
       // Street
         //makeQuad(obj, p100, p120, p220, p200, up, h, false);
@@ -96,17 +96,17 @@ ArrayList<PShape> createCity(int ny, int nx, boolean isFFT) {
 void makeQuad(PShape obj, PVector vec0, PVector vec1, PVector vec2, PVector vec3,
         PVector normal, float h, boolean windows, boolean transpose){
       int texLeft, texRight, texBottom, texTop;
-      //if(windows){
+      if(windows){
         texLeft = (int)(96 * noise(vec0.x, vec0.y));
-        texRight = texLeft + 31;
+        texRight = texLeft + 32;
         texBottom = 0;
         texTop = (int)(textScale * h / maxh);
-      /*}else{
-        texLeft = 65;
-        texRight = 66;
+      }else{
+        texLeft = 0;
+        texRight = 1;
         texBottom = 0;
         texTop = 1;
-      }*/
+      }
       
       setNormal(obj, normal);
       setVertex(obj, vec0, texLeft, texBottom, transpose);
@@ -144,10 +144,11 @@ PImage makeTexture(float windowBrightness){
       img.pixels[i + j * imgScale] = color(r, g, b, a); 
       
       if(i % 2 == 1 && j % 2 == 1){
-        float noise = noise(i * 2 + camx * 0.0002, j * 2 + camy * 0.0002) + windowBrightness;
+        float noise = noise(i * 2 + camx * 0.002, j * 2 + camy * 0.002);
         noise = max(0, min(noise, 1));
         if(noise < treshold)
           noise = 0;
+        noise += windowBrightness;
         img.pixels[i + j * imgScale] = color(lerp(r, yellowR, noise),
                                             lerp(g, yellowG, noise), 
                                             lerp(b, yellowB, noise)); 

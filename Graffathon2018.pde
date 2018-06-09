@@ -34,7 +34,7 @@ void setup() {
   moonlander.start();
 }
 
-float camx = 0, camy = 0;
+float camx = 0, camy = 0, camz = 0;
 float treshold;
 
 void draw() {
@@ -48,6 +48,7 @@ void draw() {
   
   camx = (float)moonlander.getValue("camX");
   camy = (float)moonlander.getValue("camY");
+  camz = (float)moonlander.getValue("camZ");
   
   float lightx = (float)moonlander.getValue("lightX");
   float lighty = (float)moonlander.getValue("lightY");
@@ -62,7 +63,7 @@ void draw() {
 
   // Set perspective and cam position
   // cam position, scene center position, up vector
-  camera(camx, camy, 5, lightx, lighty, lightz, 0, 0, -1);
+  camera(camx, camy, camz, lightx, lighty, lightz, 0, 0, -1);
   // Fov, aspect ratio, near, far
   perspective(PI/3, width/height, 1, 2000);
   

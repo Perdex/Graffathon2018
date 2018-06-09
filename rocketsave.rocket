@@ -34,6 +34,7 @@
 		</track>
 		<track name="doFFT">
 			<key row="0" interpolation="0" value="0"/>
+			<key row="1027" interpolation="0" value="1"/>
 		</track>
 		<track name="camY">
 			<key row="0" interpolation="0" value="-25"/>
@@ -44,19 +45,23 @@
 			<key row="385" interpolation="3" value="160"/>
 			<key row="401" interpolation="1" value="200"/>
 			<key row="417" interpolation="0" value="260"/>
+			<key row="1017" interpolation="0" value="-25"/>
 		</track>
 		<track name="camX">
 			<key row="0" interpolation="0" value="0"/>
 			<key row="152" interpolation="2" value="0"/>
 			<key row="296" interpolation="0" value="175"/>
 			<key row="361" interpolation="2" value="175"/>
-			<key row="409" interpolation="2" value="270"/>
-			<key row="421" interpolation="3" value="250"/>
+			<key row="393" interpolation="2" value="275"/>
+			<key row="421" interpolation="3" value="255"/>
 			<key row="489" interpolation="0" value="-600"/>
 			<key row="552" interpolation="0" value="2000"/>
-			<key row="1033" interpolation="0" value="1000"/>
+			<key row="1017" interpolation="0" value="2000"/>
+			<key row="1032" interpolation="2" value="2000"/>
+			<key row="1033" interpolation="2" value="1000"/>
 			<key row="1034" interpolation="0" value="2000"/>
-			<key row="1049" interpolation="0" value="1000"/>
+			<key row="1048" interpolation="2" value="2000"/>
+			<key row="1049" interpolation="2" value="1000"/>
 			<key row="1050" interpolation="0" value="2000"/>
 			<key row="1504" interpolation="0" value="2000"/>
 		</track>
@@ -71,6 +76,7 @@
 			<key row="409" interpolation="3" value="240"/>
 			<key row="473" interpolation="2" value="-600"/>
 			<key row="489" interpolation="0" value="-601"/>
+			<key row="1017" interpolation="0" value="0"/>
 		</track>
 		<track name="lightY">
 			<key row="0" interpolation="2" value="25"/>
@@ -85,29 +91,70 @@
 			<key row="358" interpolation="3" value="180"/>
 			<key row="377" interpolation="2" value="210"/>
 			<key row="401" interpolation="0" value="260"/>
-			<key row="568" interpolation="0" value="160"/>
+			<key row="457" interpolation="2" value="260"/>
+			<key row="489" interpolation="0" value="100"/>
+			<key row="1017" interpolation="0" value="-25"/>
 		</track>
 		<track name="lightZ">
 			<key row="0" interpolation="0" value="30"/>
 			<key row="257" interpolation="2" value="30"/>
 			<key row="313" interpolation="0" value="10"/>
 			<key row="353" interpolation="2" value="10"/>
-			<key row="369" interpolation="0" value="2"/>
-			<key row="425" interpolation="2" value="2"/>
+			<key row="369" interpolation="2" value="2"/>
+			<key row="385" interpolation="0" value="3"/>
+			<key row="417" interpolation="2" value="3"/>
 			<key row="489" interpolation="0" value="300"/>
+			<key row="1017" interpolation="0" value="200"/>
 		</track>
 		<track name="lightSize">
 			<key row="0" interpolation="0" value="0"/>
 			<key row="113" interpolation="2" value="0"/>
 			<key row="121" interpolation="0" value="1"/>
+			<key row="390" interpolation="2" value="1"/>
+			<key row="391" interpolation="2" value="2"/>
+			<key row="392" interpolation="0" value="1"/>
+			<key row="412" interpolation="0" value="1"/>
+			<key row="413" interpolation="0" value="2"/>
+			<key row="414" interpolation="0" value="3"/>
+			<key row="415" interpolation="0" value="1"/>
+			<key row="421" interpolation="2" value="1"/>
+			<key row="422" interpolation="2" value="2"/>
+			<key row="423" interpolation="0" value="1"/>
+			<key row="445" interpolation="0" value="1"/>
+			<key row="446" interpolation="0" value="2"/>
+			<key row="447" interpolation="0" value="3"/>
+			<key row="448" interpolation="0" value="1"/>
+			<key row="453" interpolation="2" value="1"/>
+			<key row="454" interpolation="2" value="2"/>
+			<key row="455" interpolation="0" value="1"/>
+			<key row="476" interpolation="0" value="1"/>
+			<key row="477" interpolation="0" value="2"/>
+			<key row="478" interpolation="0" value="3"/>
+			<key row="479" interpolation="0" value="1"/>
+			<key row="485" interpolation="2" value="1"/>
+			<key row="486" interpolation="2" value="2"/>
+			<key row="487" interpolation="0" value="1"/>
+			<key row="508" interpolation="0" value="1"/>
+			<key row="509" interpolation="0" value="2"/>
+			<key row="510" interpolation="0" value="3"/>
+			<key row="511" interpolation="0" value="1"/>
+			<key row="1017" interpolation="0" value="10"/>
 		</track>
 		<track name="windowBrightness">
 			<key row="0" interpolation="0" value="0"/>
+		</track>
+		<track name="camZ">
+			<key row="0" interpolation="0" value="5"/>
+			<key row="425" interpolation="2" value="5"/>
+			<key row="497" interpolation="0" value="290"/>
+			<key row="1017" interpolation="0" value="300"/>
 		</track>
 	</tracks>
 	<bookmarks>
 		<bookmark row="65"/>
 		<bookmark row="129"/>
 		<bookmark row="257"/>
+		<bookmark row="409"/>
+		<bookmark row="1033"/>
 	</bookmarks>
 </sync>
