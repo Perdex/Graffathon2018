@@ -83,7 +83,7 @@ void draw() {
   ps.run();
   
   //180, 40, 30
-  if(FFT > 0 || frameCount % 6 == 1)
+  if((FFT > 0 && frameCount % 2 == 0) || frameCount % 6 == 1)
     updateTextures(buildings, FFT, moonlander.getCurrentTime(), roadCol, windowBrightness, buildingColor);
 
   // Set perspective and cam position
@@ -98,9 +98,9 @@ void draw() {
   lights();
   ambientLight(150, 150, 150);
   specular(150);
-  drawLight(lightx + 2 * noise(frameCount * 0.2 + 332),
-            lighty + 2 * noise(frameCount * 0.2 + 676),
-            lightz + 2 * noise(frameCount * 0.2 - 257), lightSize);
+  drawLight(lightx + 2 * noise(frameCount * 0.1 + 332),
+            lighty + 2 * noise(frameCount * 0.1 + 676),
+            lightz + 2 * noise(frameCount * 0.1 - 257), lightSize);
   if(makeSun)
     drawLight(-2000, 2000, 1000, 40);
   
